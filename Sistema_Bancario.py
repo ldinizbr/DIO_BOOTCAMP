@@ -22,8 +22,10 @@ def saque(saldo,valor_saque):
         valor_saque=print("Valor de saque acima do limite, digite valor até R$500,00"end="\n")
     elif valor_saque>saldo:
         valor_saque=print(f"Você não tem saldo suficiente, digite valor até R${saldo}"end="\n")
+        
     else:
         print("Saque realizado com sucesso")
         return saldo-=valor_saque
+
 
 
