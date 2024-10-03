@@ -113,7 +113,7 @@ while opcao!=0:
             else:
                for linha in extrato:
                     print(linha)
-               opcao=""
+            opcao=""
 
         elif opcao==0:# Deseja sair do programa
             break
