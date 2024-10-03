@@ -11,6 +11,32 @@
 # Importante função
 from datetime import datetime
 
+# Iniciando as variáveis.
+menu_inicial=  """
+    ============= MENU =============
+
+    1 - Depositar
+    2 - Sacar
+    3 - Extrato
+    0 - Sair
+
+    ================================
+
+            Obrigado por usar nosso sistema!!!!
+"""
+opcao=""
+
+saldo=float(400)
+data_hora=0
+valor_deposito=float(0)
+valor_saque=float(0)
+limite_saque=float(500)
+valor=0
+data_hora=0
+extrato=[["Tipo","Valor","Data/horário","Saldo Atual"]]
+numero_saque=0
+
+
 # Definindo a função saque ------------------------------------------------------------------------
 def saque(saldo,limite_saque):
     
@@ -54,31 +80,6 @@ def deposito(saldo,valor_deposito):
         
     return saldo,data_hora,opcao
 
-# Iniciando as variáveis
-
-menu_inicial=  """
-    ============= MENU =============
-
-    1 - Depositar
-    2 - Sacar
-    3 - Extrato
-    0 - Sair
-
-    ================================
-
-            Obrigado por usar nosso sistema!!!!
-"""
-opcao=""
-
-saldo=float(400)
-data_hora=0
-valor_deposito=float(0)
-valor_saque=float(0)
-limite_saque=float(500)
-valor=0
-data_hora=0
-extrato=[["Tipo","Valor","Data/horário","Saldo Atual"]]
-numero_saque=0
 
 # Programa Bancário. Criando o programa principal ---------------------------------------
 
@@ -93,7 +94,7 @@ while opcao!=0:
             valor_deposito=float(input("Digite o valor que deseja depositar: "))
             saldo,data_hora,opcao=deposito(saldo,valor_deposito)
             if opcao=="":
-                extrato.append(["Depósito",valor_deposito,data_hora,saldo])
+                extrato.append(["Depósito",f"R${valor_deposito:.2f}",data_hora,f"R${saldo:.2f}"])
                             
         elif opcao==2:# Opção de saque
             if numero_saque>=3:# verifica a quantidade de de saques
@@ -103,7 +104,7 @@ while opcao!=0:
                 valor_saque=float(input("Digite o valor que deseja sacar: "))
                 saldo,data_hora,opcao=saque(saldo,limite_saque)
                 if opcao=="":
-                    extrato.append(["Saque",valor_saque,data_hora,saldo])
+                    extrato.append(["Saque",f"R${valor_saque:.2f}",data_hora,f"R${saldo:.2f}"])
                     numero_saque+=1
             
         elif opcao==3: # Opção de extrato
