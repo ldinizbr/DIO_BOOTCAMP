@@ -109,8 +109,9 @@ while opcao!=0:
             
         elif opcao==3: # Opção de extrato
             if len(extrato)==1:
-                print("Não foram realizadas movimentações")
+                print("\nNão foram realizadas movimentações")
             else:
+               print("\n")
                for linha in extrato:
                     print(linha)
             opcao=""
