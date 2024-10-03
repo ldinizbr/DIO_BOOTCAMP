@@ -102,11 +102,14 @@ while opcao!=0:
                 opcao=""
             else:
                 valor_saque=float(input("Digite o valor que deseja sacar: "))
-                saldo,data_hora,opcao=saque(saldo,limite_saque)
-                if opcao=="":
-                    extrato.append(["Saque",f"R${valor_saque:.2f}",data_hora,f"R${saldo:.2f}"])
-                    numero_saque+=1
-            
+                if valor_saque<0:
+                    print("Valor inválido para saque")
+                else:
+                    saldo,data_hora,opcao=saque(saldo,limite_saque)
+                    if opcao=="":
+                        extrato.append(["Saque",f"R${valor_saque:.2f}",data_hora,f"R${saldo:.2f}"])
+                        numero_saque+=1
+                
         elif opcao==3: # Opção de extrato
             if len(extrato)==1:
                 print("\nNão foram realizadas movimentações")
