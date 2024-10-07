@@ -40,7 +40,10 @@ def produto_mais_vendido(produtos):
 def obter_entrada_produtos():
     # Solicita a entrada do usuário em uma única linha
     entrada = input()
+    print(entrada)
     # TODO: Converta a entrada em uma lista de strings, removendo espaços extras:
+    produtos=list(entrada.split(","))
+    print(produtos)
     
     return produtos
 
