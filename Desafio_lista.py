@@ -32,7 +32,11 @@ def produto_mais_vendido(produtos):
     max_count = 0
     
     for produto, count in contagem.items():
+         print(f"produto={produto}",f". Contage={count}")
         # TODO: Encontre o produto com a maior contagem:
+         if count>max_count:
+          max_produto=produto
+          max_count=count
         
     
     return max_produto
@@ -40,9 +44,11 @@ def produto_mais_vendido(produtos):
 def obter_entrada_produtos():
     # Solicita a entrada do usuário em uma única linha
     entrada = input()
-    print(entrada)
+    #print(entrada)
     # TODO: Converta a entrada em uma lista de strings, removendo espaços extras:
-    produtos=list(entrada.split(","))
+    #lista = [item.strip() for item in entrada.split(",")]
+    produtos=[item.strip() for item in entrada.split(",")]
+    # produtos=list(entrada.strip().split(","))
     print(produtos)
     
     return produtos
