@@ -1,6 +1,9 @@
 # Importante função
 from datetime import datetime
 
+
+# Inicialização das variáveis.
+
 menu = """
 
 [c] Cadastro Cliente
@@ -11,49 +14,80 @@ menu = """
 [q] Sair
 
 => """
-
 saldo = 0
 limite = 500
 extrato = ""
 numero_saques = 0
 LIMITE_SAQUES = 3
-cliente={}
+AGENCIA = "0001"
+cliente = {}
+contas_cadastradas = {}
 
 
+# ----------------------------------- Função cadastro de conta ----------------------------------------
+# Esta função vai receber o número da AGENCIA (uma constante), recebe o dicionário com as contas cadastradas
+# e o dicionário de cliente cadastrdos. Vai retornar o dicionário contas_cadastradas com a conta criada.
+def cadastro_conta(AGENCIA, contas_cadastradas, cliente):
 
-# regras para cadastro cliente.
+    # Busca o CPF do cliente que deseja abrir a conta.
+    cpf_cadastrado = input("Digite seu CPF:").replace(" ","").replace(".", "").replace("-", "").replace("_", "")
+    
+    if cpf_cadastrado in cliente: # Verifica se o CPF está cadastrado.
 
+        if contas_cadastradas == {}: # Avalia se é o primeiro conta.
+            n_conta=1
+        else:
+            lista_contas = list(contas_cadastradas.keys())
+            n_conta = max(lista_contas)+1 # Procura a conta de maior valor.
 
-# Aprimorar o código agrupando em funções
+        contas_cadastradas[n_conta]={"nome_cliente":cliente[cpf_cadastrado]["nome"],
+        "agencia":AGENCIA}
 
+        print("\n=== Cadastro concluído com sucesso! ===")
+
+    else:
+        print("< Falha!! CPF não cadastrado. >")
+
+    return contas_cadastradas
+#  ------------------------------ Fim função cadastra conta -----------------------------------
+
+# ----------------------------------- Função cadastro de cliente ----------------------------------------
+# Esta função recebe o dicionário com os clientes cadastradas
+# Retona ao dicionário atualizado.
 def cadastro(cliente):
 
-    cpf = input("Digite seu CPF:").replace(" ","").replace(".", "").replace("-", "").replace("_", "")
+    cpf = input("Digite seu CPF (somente números): ").replace(" ","").replace(".", "").replace("-", "").replace("_", "")
 
     if cpf in cliente:
-        mensagem = ("Falha de operação. CPF já cadastrado.")
+        mensagem = ("< Falha de operação. CPF já cadastrado. >")
+
     else:
-        # posicao = len(cliente)
         dados_cliente={}
         
-        nome = input("Digite seu nome completo.\n=>")  
+        nome = input("Digite seu nome completo.\n=> ")  
         dados_cliente["nome"] = nome
 
-        telefone = input("Digite o número do telefone com DDD.\n=>")
+        telefone = input("Digite o número do telefone com DDD.\n=> ")
         dados_cliente["telefone"] = telefone
 
-        nascimento = input("Digite a data do seu nascimento (dd/mm/aaa).\n=>")  
+        nascimento = input("Digite a data do seu nascimento (dd/mm/aaa).\n=> ")  
         dados_cliente["data_nascimento"] = nascimento
 
-        endereco = input("Digite seu endereço (Rua/Av., nome da rua, nº, bairro, cidade-UF).\n=>")  
+        endereco = input("Digite seu endereço (Rua/Av., nome da rua, nº, bairro, cidade-UF).\n=> ")  
         dados_cliente["endereco"] = endereco
 
-        cliente.update({cpf: dados_cliente})
-        print("\nCadastro realizado com sucesso!\n")
+        cliente[cpf] = dados_cliente
+        print("\n=== Cadastro realizado com sucesso! ===\n")
 
     return cliente
+#  ------------------------------ Fim função cadastro de cliente -----------------------------------
 
-def saque(saldo, limite, numero_saques,LIMITE_SAQUES,extrato):
+# ----------------------------------- Função saque --------------------------------------------------
+# Esta função vai subtrair o valor informado do saldo existente.
+# A quantidade de saque é limitado e o valor máximo também, conforme variavel 'numero_saques' e constante LIMITE_SAQUES.
+# Recebe a variável extrato para atualizar a operação realizada.
+# Atualiza e retorna saldo, numero_saques, extrato e mensagem do resultado da operação.
+def saque(*,saldo, limite, numero_saques,limite_saque,extrato):
     mensagem=""
 
     valor = float(input("Informe o valor do saque: "))
@@ -62,18 +96,18 @@ def saque(saldo, limite, numero_saques,LIMITE_SAQUES,extrato):
 
     excedeu_limite = valor > limite
 
-    excedeu_saques = numero_saques >= LIMITE_SAQUES
+    excedeu_saques = numero_saques >= limite_saque
 
     if excedeu_saldo:
-        mensagem = "Operação falhou! Você não tem saldo suficiente.\n"
+        mensagem = "< Operação falhou! Você não tem saldo suficiente. >\n"
         mensagem += f"Saldo atual é R$ {saldo:.2f}"
 
     elif excedeu_limite:
-        mensagem = "Operação falhou! O valor do saque excede o limite.\n"
-        mensagem += f"Limite por saque é R$ {limite:.2f}"
+        mensagem = "< Operação falhou! O valor do saque excede o limite. >\n"
+        mensagem += f"< Limite por saque é R$ {limite:.2f} >"
 
     elif excedeu_saques:
-        mensagem = "Operação falhou! Número máximo de saques excedido."
+        mensagem = "< Operação falhou! Número máximo de saques excedido. >"
 
     elif valor > 0:
 
@@ -82,14 +116,19 @@ def saque(saldo, limite, numero_saques,LIMITE_SAQUES,extrato):
         saldo -= valor
         extrato += f"Saque:\t\tR$ {valor:.2f}\t{data_hora.strftime("%d/%m/%Y")}\t{data_hora.strftime("%H:%M:%S")}\n"
         numero_saques += 1
-        mensagem = "Saque realizado com sucesso!"
+        mensagem = "=== Saque realizado com sucesso! ==="
 
     else:
-        mensagem=("Operação falhou! O valor informado é inválido.")
+        mensagem=("< Operação falhou! O valor informado é inválido. >")
 
     return saldo,numero_saques,extrato,mensagem
+#  ------------------------------ Fim função cadastro de cliente -----------------------------------
 
-def deposito(saldo,extrato):
+# --------------------------------------- Função deposito -------------------------------------------
+# Esta função adiciona o valor informado no saldo existente.
+# Atualiza e retorna saldo e extrato.
+
+def deposito(saldo,extrato,/):
     mensagem=""
     valor = float(input("Informe o valor do depósito: "))
 
@@ -97,29 +136,31 @@ def deposito(saldo,extrato):
         saldo += valor
         data_hora = datetime.now()
         extrato += f"Depósito:\tR$ {valor:.2f}\t{data_hora.strftime("%d/%m/%Y")}\t{data_hora.strftime("%H:%M:%S")}\n"
-        mensagem = "Depósito realizado com sucesso!"
+        mensagem = "\n=== Depósito realizado com sucesso! ==="
 
     else:
-        mensagem = "Operação falhou! O valor informado é inválido."
+        mensagem = "< Operação falhou! O valor informado é inválido. >"
 
     return saldo,extrato,mensagem
+#  ------------------------------ Fim função cadastro de cliente -----------------------------------
 
-#saldo,mensagem
-
-def print_extrato(saldo,extrato):
+# ----------------------------------- Função extrato ----------------------------------------
+# Imprimir o saldo que foi atualizado pelas funções saque e deposito.
+# Não retorna valor.
+def print_extrato(saldo,/,*,extrato):
     print("\n======================== EXTRATO ========================\n")
     print("Não foram realizadas movimentações." if not extrato else extrato)
     print(f"\nSaldo: R$ {saldo:.2f}")
     print("==========================================================")
     return
+#  ------------------------------ Fim função cadastro de cliente -----------------------------------
 
-
-while True:
+# ----------------------------------- Função principal ----------------------------------------
+while True: # Loop infinito para o programa rodar contínuo.
 
     opcao = input(menu)
 
     if opcao == "d":
-        
         saldo,extrato,mensagem = deposito(saldo,extrato)
         print(mensagem)
 
@@ -127,14 +168,24 @@ while True:
         cliente = cadastro(cliente)
 
     elif opcao == "s":
-        saldo, numero_saques, extrato, mensagem = saque(saldo, limite, numero_saques, LIMITE_SAQUES, extrato)
+        saldo, numero_saques, extrato, mensagem = saque(
+            saldo=saldo,
+            limite=limite,
+            numero_saques=numero_saques,
+            limite_saque=LIMITE_SAQUES,
+            extrato=extrato)
+        
         print(mensagem)
 
     elif opcao == "e":
-        print_extrato(saldo,extrato)
+        print_extrato(saldo,extrato=extrato)
+
+    elif opcao == "a":
+        cadastro_conta(AGENCIA, contas_cadastradas, cliente)
 
     elif opcao == "q":
         break
 
-    else:
-        print("Operação inválida, por favor selecione novamente a operação desejada.")
+    else: # Quando a entrada não tem uma opção válida.
+        print("< Operação inválida, por favor selecione novamente a operação desejada. >")
+# ----------------------------------- Fim do Programa ----------------------------------------
