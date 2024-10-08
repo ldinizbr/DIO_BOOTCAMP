@@ -17,12 +17,41 @@ limite = 500
 extrato = ""
 numero_saques = 0
 LIMITE_SAQUES = 3
+cliente={}
+
 
 
 # regras para cadastro cliente.
 
 
 # Aprimorar o código agrupando em funções
+
+def cadastro(cliente):
+
+    cpf = input("Digite seu CPF:").replace(" ","").replace(".", "").replace("-", "").replace("_", "")
+
+    if cpf in cliente:
+        mensagem = ("Falha de operação. CPF já cadastrado.")
+    else:
+        # posicao = len(cliente)
+        dados_cliente={}
+        
+        nome = input("Digite seu nome completo.\n=>")  
+        dados_cliente["nome"] = nome
+
+        telefone = input("Digite o número do telefone com DDD.\n=>")
+        dados_cliente["telefone"] = telefone
+
+        nascimento = input("Digite a data do seu nascimento (dd/mm/aaa).\n=>")  
+        dados_cliente["data_nascimento"] = nascimento
+
+        endereco = input("Digite seu endereço (Rua/Av., nome da rua, nº, bairro, cidade-UF).\n=>")  
+        dados_cliente["endereco"] = endereco
+
+        cliente.update({cpf: dados_cliente})
+        print("\nCadastro realizado com sucesso!\n")
+
+    return cliente
 
 def saque(saldo, limite, numero_saques,LIMITE_SAQUES,extrato):
     mensagem=""
@@ -91,11 +120,14 @@ while True:
 
     if opcao == "d":
         
-        saldo,extrato,mensagem=deposito(saldo,extrato)
+        saldo,extrato,mensagem = deposito(saldo,extrato)
         print(mensagem)
 
+    elif opcao == "c":
+        cliente = cadastro(cliente)
+
     elif opcao == "s":
-        saldo,numero_saques,extrato, mensagem=saque(saldo, limite, numero_saques,LIMITE_SAQUES,extrato)
+        saldo, numero_saques, extrato, mensagem = saque(saldo, limite, numero_saques, LIMITE_SAQUES, extrato)
         print(mensagem)
 
     elif opcao == "e":
