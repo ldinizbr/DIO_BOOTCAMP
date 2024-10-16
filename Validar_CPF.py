@@ -8,7 +8,6 @@ for numero in cpf_in: # Gera uma lista apenas com os números do cpf
     numero=int(numero)
     if isinstance(numero, int):
         cpf_lista.append(numero)
-
 print(f"lista do cpf: {cpf_lista}")
 
 for i in range(9):  # Vai calcular o primeiro dígito verificador

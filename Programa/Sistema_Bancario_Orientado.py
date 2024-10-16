@@ -150,7 +150,8 @@ class Historico(self):
         {
             "tipo": transacao.__class__.__name__,
             "valor": transacao.valor,
-            "data": datetime.now().strftime("%d-%m-%Y %H:%M:%s"),
+            "data": datetime.now().strftime("%d/%m/%Y"),
+            "hora": datetime.now().strftime("%H:%M:%s"),
         }
     )
 
@@ -166,7 +167,7 @@ class Transacao(ABC):
         pass
 
 # ----------------------- Criação da classe Saque(Transacao) ------------------------------------------
-class Saque(Transacao)(self):
+class Saque(Transacao):
     def __init__(self, valor):
         self._valor = valor
 
@@ -189,7 +190,7 @@ class Deposito(Transacao):
     def valor(self):
         return self._valor
     
-     def registrar(self, conta):
+    def registrar(self, conta):
         sucesso_transacao = conta.depositar(self.valor)
 
         if sucesso_transacao:
