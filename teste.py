@@ -1,36 +1,53 @@
-class Restaurante:
-    restaurantes = []
+class Venda:
+    def __init__(self, produto, quantidade, valor):
+        self.produto = produto
+        self.quantidade = quantidade
+        self.valor = valor
 
-    def __init__(self, nome, categoria):
-        self._nome = nome.title()
-        self._categoria = categoria.upper()
-        self._ativo = False
-        Restaurante.restaurantes.append(self)
+class Categoria:
+    def __init__(self, nome):
+        self.nome = nome
+        self.vendas = []
+
+    # TODOS: Implementar o método adicionar_venda para adicionar uma venda à lista de vendas:
+    def adicionar_venda(self, venda):
+        self.vendas.append(venda)
+        
+
+    # TODOS: Implementar o método total_vendas para calcular e retornar o total das vendas
+    def total_vendas(self):
+        total = 0
+        for venda in self.vendas:
+            total += venda.quantidade * venda.valor
+            
+        return total
+
+def main():
+    categorias = []
+
+    for i in range(2):
+        nome_categoria = input()
+        categoria = Categoria(nome_categoria)
+
+        for j in range(2): 
+            entrada_venda = input()
+            produto, quantidade, valor = entrada_venda.split(',')
+            quantidade = int(quantidade.strip())
+            valor = float(valor.strip())
+
+            venda = Venda(produto.strip(), quantidade, valor)
+            # TODOS: Adicione a venda à categoria usando o método adicionar_venda:
+            categoria.adicionar_venda(venda)
+
+        categorias.append(categoria)
     
-    def __str__(self):
-        return f'{self._nome} | {self._categoria}'
-    
-    @classmethod
-    def listar_restaurantes(cls):
-        print(f'{'Nome do restaurante'.ljust(25)} | {'Categoria'.ljust(25)} | {'Status'}')
-        for restaurante in cls.restaurantes:
-            print(f'{restaurante._nome.ljust(25)} | {restaurante._categoria.ljust(25)} | {restaurante.ativo}')
+    # Exibindo os totais de vendas para cada categoria
+    for categoria in categorias:
+        # TODOS: Exibir o total de vendas usando o método total_vendas:
+        print(f"Vendas em {categoria.nome}: {categoria.total_vendas:.1f}")
 
-    @property
-    def ativo(self):
-        return '⌧' if self._ativo else '☐'
-    
-    def alternar_estado(self):
-        self._ativo = not self._ativo
 
-restaurante_praca = Restaurante('praça', 'Gourmet')
-restaurante_praca.alternar_estado()
-restaurante_pizza = Restaurante('pizza express', 'Italiana')
+if __name__ == "__main__":
+    main()
 
-Restaurante.listar_restaurantes()
 
-valor_1=10
-valor_2=12
-valor_3=15
-media= (valor_1+valor_2+valor_3)/3
-print(media/5)
